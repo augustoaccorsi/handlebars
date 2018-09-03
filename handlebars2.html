@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Handlebars with Tamplate</title>
+  <style type="text/css">
+    .redText {color: red;}
+    .blueText {color: blue;}
+    .greenText {color: green;}
+  </style>
+  <script src="handlebars-v4.0.10.js"></script>
+  <body>
+    <div id="quote-data"></div>
+    <script id="quote-template" src="text/x-handlebar-template">
+      <h3>Favorite {{name}} Quotes</h3>
+      <ol>
+      {{#each quotes}}
+      <li>{{quote}}
+      {{/each}}
+      </ol>
+
+      {{{gutoBio}}}<br /><br />
+
+      {{makelink "Handlebars Totorial" "https://www.youtube.com/watch?v=4HuAnM6b2d8"}}<br />
+
+      {{changeColor "Make color red" color="red"}}<br />
+
+      {{sayHello}}
+    </script>
+
+    <script type="text/javascript">
+
+    var quoteInfo = document.getElementById("quote-template").innerHTML;
+
+    var template = Handlebars.compile(quoteInfo);
+
+    Handlebars.registerHelper("makelink", function(text, url){
+      text = Handlebars.Utils.escapeExpression(text);
+      url = Handlebars.Utils.escapeExpression(url);
+
+      var link = '<a href="'+ url +'"> '+ text +'</a>';
+
+      return new Handlebars.SafeString(link);
+    });
+
+    Handlebars.registerHelper("changeColor", function(text, options){
+      text = Handlebars.Utils.escapeExpression(text);
+
+      if(options.hash.color === "red"){
+        return new Handlebars.SafeString("<span class='redText'> "+ text +"</span>");
+      }
+      else if(options.hash.color === "green"){
+        return new Handlebars.SafeString("<span class='greenText'> "+ text +"</span>");
+      }
+      else{
+        return new Handlebars.SafeString("<span class='blueText'> "+ text +"</span>");
+      }
+    });
+
+    Handlebars.registerHelper("sayHello", function(options){
+      switch(options.data.lang){
+        case "spanish":
+          return "Hola";
+          break;
+        case "portuguese":
+          return "Olá";
+          break;
+        default:
+          return "Hello";
+      }
+    });
+
+    var quoteData = template({
+      name: "Augusto Acorsi",
+      quotes: [
+        {quote: "If you don't know where you are going, you might wind up someplace else"},
+        {quote: "You'd better cut the pizza in four pieces because I'm not houngr enough to eat six"},
+        {quote: "Nobody goes there anymore because it's too crowed"}
+      ],
+      gutoBio: "<i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vel iaculis libero. Fusce at leo pulvinar, fringilla purus ac, sollicitudin sapien. Phasellus dapibus bibendum orci. Aenean neque libero, bibendum ut purus eu, tristique auctor nulla. Proin ut erat sit amet sem molestie lacinia. Aliquam erat volutpat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eget sapien vitae ipsum fringilla molestie. Cras ante ex, mattis in elit a, tincidunt interdum diam. Suspendisse congue eros nec mauris sagittis bibendum. Praesent imperdiet nunc in enim congue, a consequat ligula tempor. Ut in rutrum dolor. Donec efficitur ipsum libero, sit amet finibus nisl blandit sed. Aenean ac tempor magna. Vestibulum interdum elit non augue tempus euismod. Mauris viverra risus nibh, a consectetur orci rutrum a"
+    },
+    {data:{
+      lang: "spanish"
+    }}
+   );
+
+    document.getElementById("quote-data").innerHTML += quoteData;
+    </script>
+  </body>
+</html>

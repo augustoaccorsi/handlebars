@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Hello Handlebars</title>
+  <script src="handlebars-v4.0.10.js"></script>
+</head>
+
+<body>
+
+  <div id="data-id"></div>
+
+  <script type="text/javascript">
+    var myInfo = "<p>My name is {{firstname}} {{lastname}}</p>";
+
+    var template = Handlebars.compile(myInfo);
+
+    var data = template({
+      firstname: "Augusto",
+      lastname: "Acorsi"
+    });
+
+    document.getElementById("data-id").innerHTML += data;
+  </script>
+</body>
+
+</html>
